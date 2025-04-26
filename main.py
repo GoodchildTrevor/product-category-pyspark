@@ -23,11 +23,11 @@ def get_product_category_pairs(df_products, df_relation, df_categories):
     - DataFrame с колонками [product_name, category_name]
     """
 
-    # Выполняем левое соединение: сначала объединяем продукты и таблицу связей по product_id
+    # Выполняем LEFT JOIN: сначала объединяем продукты и таблицу связей по product_id
     df_join = df_products.join(df_relation, on="product_id", how="left") \
         .join(df_categories, on="category_id", how="left")
 
-    # Используем coalesce, чтобы для отсутствующих категорий подставить "No Category"
+    # Используем coalesce, чтобы для отсутствующих категорий подставить "Нет категории"
     df_result = df_join.select(
         "product_name",
         coalesce("category_name", lit("Нет категории")).alias("category_name")
